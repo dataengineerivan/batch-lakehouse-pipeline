@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: One row per customer with order history and a value segment
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: customer_segment
+        data_tests:
+          - accepted_values:
+              values: ['No orders', 'High value', 'Mid value', 'Low value']
+
+  - name: fct_orders
+    description: One row per order, joined to the customer's state
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+
+  - name: mart_daily_sales
+    description: Daily orders, revenue, average order value, and cancel rate
+    columns:
+      - name: order_day
+        data_tests: [unique, not_null]
+
+  - name: mart_sales_by_state
+    columns:
+      - name: customer_state
+        data_tests: [unique]

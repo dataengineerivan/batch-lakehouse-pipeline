@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Silver tables loaded from Delta Lake by Spark
+    schema: raw
+    tables:
+      - name: customers
+        columns:
+          - name: customer_id
+            data_tests: [unique, not_null]
+      - name: orders
+        columns:
+          - name: order_id
+            data_tests: [unique, not_null]
